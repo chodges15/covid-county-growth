@@ -4,10 +4,12 @@ version: "3.7"
 services:
   scraper:
     build: ./alabama_scraper
+    hostname: scraper
     image: scraper:latest
     container_name: scraper
   prometheus:
     build: ./prometheus
+    hostname: prometheus
     image: prometheus:latest
     ports:
       - "9090:9090"
@@ -16,6 +18,7 @@ services:
     container_name: prometheus
   grafana:
     image: grafana/grafana:latest
+    hostname: grafana
     ports:
       - "3000:3000"
     volumes:

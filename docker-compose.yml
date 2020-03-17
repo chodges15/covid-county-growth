@@ -1,0 +1,23 @@
+---
+
+version: "3.7"
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - "prometheus-data:/etc/prometheus"
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - "grafana-data:/var/lib/grafana"
+    environment:
+      GF_INSTALL_PLUGINS: grafana-worldmap-panel
+      
+
+volumes:
+  grafana-data:
+  prometheus-data:

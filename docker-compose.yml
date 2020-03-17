@@ -2,12 +2,18 @@
 
 version: "3.7"
 services:
+  scraper:
+    build: ./alabama_scraper
+    image: scraper:latest
+    container_name: scraper
   prometheus:
-    image: prom/prometheus:latest
+    build: ./prometheus
+    image: prometheus:latest
     ports:
       - "9090:9090"
     volumes:
       - "prometheus-data:/etc/prometheus"
+    container_name: prometheus
   grafana:
     image: grafana/grafana:latest
     ports:
@@ -16,6 +22,7 @@ services:
       - "grafana-data:/var/lib/grafana"
     environment:
       GF_INSTALL_PLUGINS: grafana-worldmap-panel
+    container_name: grafana
       
 
 volumes:

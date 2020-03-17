@@ -60,7 +60,7 @@ class AlabamaCovidTableParser:
 if __name__ == '__main__':
     app = AlabamaCovidTableParser()
     def poll():
-        threading.Timer(5.0, poll).start()
+        threading.Timer(900.0, poll).start()
         app.update_counters()
     poll()
     # Start up the server to expose the metrics.

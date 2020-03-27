@@ -1,0 +1,929 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 1,
+  "iteration": 1585283950887,
+  "links": [],
+  "panels": [
+    {
+      "content": "\n# Alabama COVID-19 Cases\n### Data automatically updated every hour\n[Department of Health Data Source](http://alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html) |\n[Source Code](https://github.com/chodges15/covid-county-growth) |\n[Samford's arcgis dashboard](https://samford.maps.arcgis.com/apps/webappviewer/index.html?id=5d07a1a339d841c2b1b72eeec2051781) |\n[MIT License](https://github.com/chodges15/covid-county-growth/blob/master/LICENSE) |\n[Nicer Looking Alabama Dashboard](https://alcovid19.info)\n",
+      "datasource": null,
+      "gridPos": {
+        "h": 4,
+        "w": 23,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "mode": "markdown",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Info",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "Data source: http://alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html",
+      "fill": 1,
+      "fillGradient": 5,
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "hiddenSeries": false,
+      "id": 2,
+      "interval": "",
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": [
+          {
+            "title": "",
+            "url": ""
+          }
+        ]
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "case_count{job=\"covid\", county_name=~\"[[County]]\"} != 0",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 5,
+          "legendFormat": "{{ county_name }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "COVID-19 Case Trend",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 19
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "last"
+          ],
+          "defaults": {
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [],
+          "values": false
+        },
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto"
+      },
+      "pluginVersion": "6.7.0-beta1",
+      "targets": [
+        {
+          "expr": "sum(case_count{job=\"covid\", county_name=~\"[[County]]\"}) - sum(case_count{job=\"covid\", county_name=~\"[[County]]\"} offset 1d)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "# New in Last 24H",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 4,
+        "y": 19
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "last"
+          ],
+          "defaults": {
+            "decimals": 1,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto"
+      },
+      "pluginVersion": "6.7.0-beta1",
+      "targets": [
+        {
+          "expr": "count(case_count != 0) / 67",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Counties Reporting Cases",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "Total number of confirmed cases statewide, ignores the county selection option above.",
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 8,
+        "y": 19
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "last"
+          ],
+          "defaults": {
+            "mappings": [
+              {
+                "from": "",
+                "id": 1,
+                "operator": "",
+                "text": "",
+                "to": "",
+                "type": 1,
+                "value": ""
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [],
+          "values": false
+        },
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto"
+      },
+      "pluginVersion": "6.7.0-beta1",
+      "targets": [
+        {
+          "expr": "sum(case_count)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Alabama Statewide Cases",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "fillGradient": 5,
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 12,
+        "y": 19
+      },
+      "hiddenSeries": false,
+      "id": 14,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(case_count)",
+          "interval": "",
+          "intervalFactor": 3,
+          "legendFormat": "Cases",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Statewide Cases",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "columns": [
+        {
+          "text": "Current",
+          "value": "current"
+        }
+      ],
+      "datasource": null,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 19
+      },
+      "id": 8,
+      "pageSize": null,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [],
+      "targets": [
+        {
+          "expr": "topk(5, case_count)",
+          "interval": "",
+          "legendFormat": "{{county_name}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Top Counties By Cases",
+      "transform": "timeseries_aggregations",
+      "type": "table"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "hiddenSeries": false,
+      "id": 16,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "death_count{job=\"covid\", county_name=~\"[[County]]\"} != 0",
+          "interval": "",
+          "legendFormat": "{{ county_name }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Deaths",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 22,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(county_name)",
+        "hide": 0,
+        "includeAll": true,
+        "index": -1,
+        "label": null,
+        "multi": true,
+        "name": "County",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "AUTAUGA",
+            "value": "AUTAUGA"
+          },
+          {
+            "selected": false,
+            "text": "BALDWIN",
+            "value": "BALDWIN"
+          },
+          {
+            "selected": false,
+            "text": "BARBOUR",
+            "value": "BARBOUR"
+          },
+          {
+            "selected": false,
+            "text": "BIBB",
+            "value": "BIBB"
+          },
+          {
+            "selected": false,
+            "text": "BLOUNT",
+            "value": "BLOUNT"
+          },
+          {
+            "selected": false,
+            "text": "BULLOCK",
+            "value": "BULLOCK"
+          },
+          {
+            "selected": false,
+            "text": "BUTLER",
+            "value": "BUTLER"
+          },
+          {
+            "selected": false,
+            "text": "CALHOUN",
+            "value": "CALHOUN"
+          },
+          {
+            "selected": false,
+            "text": "CHAMBERS",
+            "value": "CHAMBERS"
+          },
+          {
+            "selected": false,
+            "text": "CHEROKEE",
+            "value": "CHEROKEE"
+          },
+          {
+            "selected": false,
+            "text": "CHILTON",
+            "value": "CHILTON"
+          },
+          {
+            "selected": false,
+            "text": "CHOCTAW",
+            "value": "CHOCTAW"
+          },
+          {
+            "selected": false,
+            "text": "CLARKE",
+            "value": "CLARKE"
+          },
+          {
+            "selected": false,
+            "text": "CLAY",
+            "value": "CLAY"
+          },
+          {
+            "selected": false,
+            "text": "CLEBURNE",
+            "value": "CLEBURNE"
+          },
+          {
+            "selected": false,
+            "text": "COFFEE",
+            "value": "COFFEE"
+          },
+          {
+            "selected": false,
+            "text": "COLBERT",
+            "value": "COLBERT"
+          },
+          {
+            "selected": false,
+            "text": "CONECUH",
+            "value": "CONECUH"
+          },
+          {
+            "selected": false,
+            "text": "COOSA",
+            "value": "COOSA"
+          },
+          {
+            "selected": false,
+            "text": "COVINGTON",
+            "value": "COVINGTON"
+          },
+          {
+            "selected": false,
+            "text": "CRENSHAW",
+            "value": "CRENSHAW"
+          },
+          {
+            "selected": false,
+            "text": "CULLMAN",
+            "value": "CULLMAN"
+          },
+          {
+            "selected": false,
+            "text": "DALE",
+            "value": "DALE"
+          },
+          {
+            "selected": false,
+            "text": "DALLAS",
+            "value": "DALLAS"
+          },
+          {
+            "selected": false,
+            "text": "DEKALB",
+            "value": "DEKALB"
+          },
+          {
+            "selected": false,
+            "text": "ELMORE",
+            "value": "ELMORE"
+          },
+          {
+            "selected": false,
+            "text": "ESCAMBIA",
+            "value": "ESCAMBIA"
+          },
+          {
+            "selected": false,
+            "text": "ETOWAH",
+            "value": "ETOWAH"
+          },
+          {
+            "selected": false,
+            "text": "FAYETTE",
+            "value": "FAYETTE"
+          },
+          {
+            "selected": false,
+            "text": "FRANKLIN",
+            "value": "FRANKLIN"
+          },
+          {
+            "selected": false,
+            "text": "GENEVA",
+            "value": "GENEVA"
+          },
+          {
+            "selected": false,
+            "text": "GREENE",
+            "value": "GREENE"
+          },
+          {
+            "selected": false,
+            "text": "HALE",
+            "value": "HALE"
+          },
+          {
+            "selected": false,
+            "text": "HENRY",
+            "value": "HENRY"
+          },
+          {
+            "selected": false,
+            "text": "HOUSTON",
+            "value": "HOUSTON"
+          },
+          {
+            "selected": false,
+            "text": "JACKSON",
+            "value": "JACKSON"
+          },
+          {
+            "selected": false,
+            "text": "JEFFERSON",
+            "value": "JEFFERSON"
+          },
+          {
+            "selected": false,
+            "text": "LAMAR",
+            "value": "LAMAR"
+          },
+          {
+            "selected": false,
+            "text": "LAUDERDALE",
+            "value": "LAUDERDALE"
+          },
+          {
+            "selected": false,
+            "text": "LAWRENCE",
+            "value": "LAWRENCE"
+          },
+          {
+            "selected": false,
+            "text": "LEE",
+            "value": "LEE"
+          },
+          {
+            "selected": false,
+            "text": "LIMESTONE",
+            "value": "LIMESTONE"
+          },
+          {
+            "selected": false,
+            "text": "LOWNDES",
+            "value": "LOWNDES"
+          },
+          {
+            "selected": false,
+            "text": "MACON",
+            "value": "MACON"
+          },
+          {
+            "selected": false,
+            "text": "MADISON",
+            "value": "MADISON"
+          },
+          {
+            "selected": false,
+            "text": "MARENGO",
+            "value": "MARENGO"
+          },
+          {
+            "selected": false,
+            "text": "MARION",
+            "value": "MARION"
+          },
+          {
+            "selected": false,
+            "text": "MARSHALL",
+            "value": "MARSHALL"
+          },
+          {
+            "selected": false,
+            "text": "MOBILE",
+            "value": "MOBILE"
+          },
+          {
+            "selected": false,
+            "text": "MONROE",
+            "value": "MONROE"
+          },
+          {
+            "selected": false,
+            "text": "MONTGOMERY",
+            "value": "MONTGOMERY"
+          },
+          {
+            "selected": false,
+            "text": "MORGAN",
+            "value": "MORGAN"
+          },
+          {
+            "selected": false,
+            "text": "PERRY",
+            "value": "PERRY"
+          },
+          {
+            "selected": false,
+            "text": "PICKENS",
+            "value": "PICKENS"
+          },
+          {
+            "selected": false,
+            "text": "PIKE",
+            "value": "PIKE"
+          },
+          {
+            "selected": false,
+            "text": "RANDOLPH",
+            "value": "RANDOLPH"
+          },
+          {
+            "selected": false,
+            "text": "RUSSELL",
+            "value": "RUSSELL"
+          },
+          {
+            "selected": false,
+            "text": "SHELBY",
+            "value": "SHELBY"
+          },
+          {
+            "selected": false,
+            "text": "ST CLAIR",
+            "value": "ST CLAIR"
+          },
+          {
+            "selected": false,
+            "text": "ST. CLAIR",
+            "value": "ST. CLAIR"
+          },
+          {
+            "selected": false,
+            "text": "SUMTER",
+            "value": "SUMTER"
+          },
+          {
+            "selected": false,
+            "text": "TALLADEGA",
+            "value": "TALLADEGA"
+          },
+          {
+            "selected": false,
+            "text": "TALLAPOOSA",
+            "value": "TALLAPOOSA"
+          },
+          {
+            "selected": false,
+            "text": "TUSCALOOSA",
+            "value": "TUSCALOOSA"
+          },
+          {
+            "selected": false,
+            "text": "WALKER",
+            "value": "WALKER"
+          },
+          {
+            "selected": false,
+            "text": "WASHINGTON",
+            "value": "WASHINGTON"
+          },
+          {
+            "selected": false,
+            "text": "WILCOX",
+            "value": "WILCOX"
+          },
+          {
+            "selected": false,
+            "text": "WINSTON",
+            "value": "WINSTON"
+          }
+        ],
+        "query": "label_values(county_name)",
+        "refresh": 0,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "2020-03-17T20:00:00.000Z",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "COVID-19",
+  "uid": "Mup-QsXZk",
+  "variables": {
+    "list": []
+  },
+  "version": 32
+}

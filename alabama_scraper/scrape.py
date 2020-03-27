@@ -1,13 +1,25 @@
-from bs4 import BeautifulSoup
 from datetime import datetime
 from prometheus_client import Gauge, start_http_server
-import urllib.request, urllib.error, urllib.parse
+import requests
 import threading
 
-aldh_covid_url = 'http://www.alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html'
+poll_time = 3600
+arcgis_url = 'https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query'
+query_params = {
+    "f": "json",
+    "where": "CONFIRMED>0",
+    "returnGeometry": "false",
+    "outFields": "CNTYNAME,CONFIRMED,DIED",
+    "orderFields": "CNTYNAME"
+}
 
 CASE_COUNT = Gauge(
     'case_count', 'Number of confirmed COVID-19 cases',
+    ['county_name']
+)
+
+DEATH_COUNT = Gauge(
+    'death_count', 'Number of confirmed COVID-19 deaths',
     ['county_name']
 )
 
@@ -26,41 +38,34 @@ class AlabamaCovidTableParser:
                  'WINSTON']
 
 
-  def fetch_table_data(self):
-    response = urllib.request.urlopen(aldh_covid_url)
-    aldh_covid_page = response.read()
-    soup = BeautifulSoup(aldh_covid_page, 'html.parser')
-    return soup.find_all('table')[0]
+  def fetch_data(self):
+    return requests.get(arcgis_url, params=query_params)
 
-  def parse_table(self, table) -> dict:
-    def get_date(table_row) -> datetime:
-      updated_string: str = table_row.find_all('h2')[1].text
-      time_string: str = updated_string.strip('Updated: ').rstrip(' (CT)').replace('.', '')
-      print(time_string)
-      return datetime.strptime(time_string, '%B %d, %Y %I:%M %p')
+  def parse_data(self, data, stat) -> dict:
+    def parse_row(row: dict) -> (str, int):
+        return row['attributes']['CNTYNAME'].upper(), row['attributes'][stat]
 
-    def parse_county_row(table_row) -> tuple:
-      key = table_row.find_all('p')[0]
-      value = table_row.find_all('p')[1]
-      return key.text.upper(), value.text
-
-
-    table_rows = table.find_all('tr')
-    get_date(table_rows[0])
-    return {county: count for county, count in map(parse_county_row, table_rows[2:-1])}
+    county_data: dict = data['features']
+    return {county: count for county, count in map(parse_row, county_data)}
 
   def update_counters(self):
-    table = self.fetch_table_data()
-    county_dict: dict = {county: 0 for county in self.county_names}
-    county_dict.update(self.parse_table(table))
-    for county in county_dict:
-        CASE_COUNT.labels(county).set(county_dict[county])
+    data = self.fetch_data().json()
+    print(data)
+    county_case_dict: dict = {county: 0 for county in self.county_names}
+    county_case_dict.update(self.parse_data(data, "CONFIRMED"))
+    county_death_dict: dict = {county: 0 for county in self.county_names}
+    county_death_dict.update(self.parse_data(data, "DIED"))
+    print(county_case_dict)
+    for county in county_case_dict:
+        CASE_COUNT.labels(county).set(county_case_dict[county])
+    for county in county_death_dict:
+        DEATH_COUNT.labels(county).set(county_death_dict[county])
 
 
 if __name__ == '__main__':
     app = AlabamaCovidTableParser()
     def poll():
-        threading.Timer(900.0, poll).start()
+        threading.Timer(poll_time, poll).start()
         app.update_counters()
     poll()
     # Start up the server to expose the metrics.
